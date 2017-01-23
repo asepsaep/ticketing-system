@@ -1,0 +1,74 @@
+@template("Edit Ticket") {
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            General Form Elements
+            <small>Preview</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">General Elements</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+                <!-- Horizontal Form -->
+
+                <!-- /.box -->
+                <!-- general form elements disabled -->
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">General Elements</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form role="form">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control" placeholder="Enter ...">
+                            </div>
+
+                            <!-- textarea -->
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                            </div>
+
+                            <!-- select -->
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select class="form-control">
+                                    <option>High</option>
+                                    <option>Normal</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+
+                        </form>
+
+                        <button type="button" class="btn btn-default"><i class="fa fa-envelope-o"></i> Save</button>
+                        <button type="button" class="btn btn-default"><i class="fa fa-file-text-o"></i> Cancel</button>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+}
