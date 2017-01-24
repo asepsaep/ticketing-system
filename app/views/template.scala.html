@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, account: models.Account, notifications: Seq[Notification])(content: Html)
 
 <!DOCTYPE html>
 <html>
@@ -57,21 +57,23 @@
                     <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
+                            @if(!notifications.filter(notif => !notif.isViewed).isEmpty) {
+                                <span class="label label-warning">@notifications.filter(notif => !notif.isViewed).size</span>
+                            }
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
+                            @for(notif <- notifications.take(10)) {
                             <li>
-                                <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
                                     <li>
                                         <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                            @notif.content
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="footer"><a href="#">View all</a></li>
+                            }
+                            <li class="footer"><a href="@routes.HomeController.notification()">View all</a></li>
                         </ul>
                     </li>
                     <!-- Tasks: style can be found in dropdown.less -->
@@ -79,16 +81,16 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="@routes.Assets.versioned("images/user2-160x160.jpg")" class="user-image" alt="User Image">
-                            <span class="hidden-xs">DBMP Kota Bandung</span>
+                            <img src="@routes.Assets.versioned("images/" + account.avatarUrl.getOrElse("profile.jpg") + "")" class="user-image" alt="User Image">
+                            <span class="hidden-xs">@account.name</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="@routes.Assets.versioned("images/user2-160x160.jpg")" class="img-circle" alt="User Image">
+                                <img src="@routes.Assets.versioned("images/" + account.avatarUrl.getOrElse("profile.jpg") + "")" class="img-circle" alt="User Image">
 
                                 <p>
-                                    DBMP Kota Bandung
+                                    @account.name
                                 </p>
                             </li>
                             <!-- Menu Footer-->
@@ -112,11 +114,15 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="@routes.Assets.versioned("images/user2-160x160.jpg")" class="img-circle" alt="User Image">
+                    <img src="@routes.Assets.versioned("images/" + account.avatarUrl.getOrElse("profile.jpg") + "")" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>DBMP Kota Bandung</p>
+                    <p>@account.name</p>
+                    @if(account.userType.getOrElse("user") == "admin") {
+                    <a href="#"><!-- <i class="fa fa-circle text-success"></i> --> Admin</a>
+                    } else {
                     <a href="#"><!-- <i class="fa fa-circle text-success"></i> --> Penanggung Jawab Tiket</a>
+                    }
                 </div>
             </div>
 
@@ -124,7 +130,7 @@
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>
-                <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Tiket</span></a></li>
+                <li><a href="@routes.TicketController.tickets"><i class="fa fa-book"></i> <span>Tiket</span></a></li>
                 <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Notifikasi</span></a></li>
                 <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Statistik</span></a></li>
             </ul>

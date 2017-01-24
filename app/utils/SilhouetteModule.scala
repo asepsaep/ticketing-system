@@ -1,5 +1,6 @@
 package utils
 
+import actors.{ NotificationManager, TicketReceiver, TicketReceiverHub }
 import com.google.inject.name.Named
 import com.google.inject.{ AbstractModule, Provides }
 import com.mohiva.play.silhouette.api.actions.{ SecuredErrorHandler, UnsecuredErrorHandler }
@@ -27,6 +28,7 @@ import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
+import play.api.libs.concurrent.AkkaGuiceSupport
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.ws.WSClient
 import utils.authentication.{ CustomSecuredErrorHandler, CustomUnsecuredErrorHandler, DefaultEnv }
@@ -34,12 +36,16 @@ import utils.authentication.{ CustomSecuredErrorHandler, CustomUnsecuredErrorHan
 /**
  * The Guice module which wires all Silhouette dependencies.
  */
-class SilhouetteModule extends AbstractModule with ScalaModule {
+class SilhouetteModule extends AbstractModule with ScalaModule with AkkaGuiceSupport {
 
   /**
    * Configures the module.
    */
   def configure() = {
+    bind[CamelContextInitiator]
+    bindActor[TicketReceiver]("ticket-receiver")
+    bindActor[NotificationManager]("notification-manager")
+    bindActor[TicketReceiverHub]("ticket-receiver-hub")
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[UnsecuredErrorHandler].to[CustomUnsecuredErrorHandler]
     bind[SecuredErrorHandler].to[CustomSecuredErrorHandler]

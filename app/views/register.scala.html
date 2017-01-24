@@ -37,6 +37,13 @@
     <div class="login-box-body">
         <p class="login-box-msg">Register</p>
 
+        @request.flash.get("error").map { msg =>
+        <div class="form-group has-error">
+            <!--<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Input with error</label>-->
+            <span class="help-block">@msg</span>
+        </div>
+        }
+
         @helper.form(action = routes.RegisterController.submit()) {
         @helper.CSRF.formField
         <div class="form-group has-feedback">

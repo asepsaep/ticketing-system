@@ -14,7 +14,7 @@ import play.api.Logger
 
 trait NotificationDAO {
   def find(id: Long): Future[Option[Notification]]
-  def findTo(belongsTo: String): Future[Seq[Notification]]
+  def findFrom(belongsTo: String): Future[Seq[Notification]]
   def save(notification: Notification): Future[Notification]
   def count: Future[Int]
   def delete(id: Long): Future[Unit]
@@ -31,7 +31,7 @@ class NotificationDAOImpl @Inject() (protected val dbConfigProvider: DatabaseCon
     db.run(Notifications.filter(_.id === id).result.headOption)
   }
 
-  override def findTo(belongsTo: String): Future[Seq[Notification]] = {
+  override def findFrom(belongsTo: String): Future[Seq[Notification]] = {
     db.run(Notifications.filter(_.belongsTo === belongsTo).sortBy(_.createdAt.desc).result)
   }
 

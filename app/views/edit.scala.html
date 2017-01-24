@@ -1,16 +1,20 @@
-@template("Edit Ticket") {
+@(account: models.Account, notifications: Seq[Notification], ticket: Ticket, form: Form[forms.EditTicketForm.Data], priority: Seq[(String, String)])(implicit request: Request[AnyContent], messages: Messages)
+
+@import b4.inline.fieldConstructor
+
+@template("Edit Ticket", account, notifications) {
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            General Form Elements
-            <small>Preview</small>
+            Edit Ticket
+            <small>#@ticket.id.getOrElse("")</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">General Elements</li>
+            <li><a href="@routes.HomeController.dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="@routes.TicketController.tickets">Tickets</a></li>
+            <li class="active">Edit Ticket</li>
         </ol>
     </section>
 
@@ -27,37 +31,41 @@
                 <!-- general form elements disabled -->
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">General Elements</h3>
+                        <h3 class="box-title">Edit Ticket</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form role="form">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Title</label>
-                                <input type="text" class="form-control" placeholder="Enter ...">
-                            </div>
 
-                            <!-- textarea -->
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                            </div>
 
-                            <!-- select -->
-                            <div class="form-group">
-                                <label>Priority</label>
-                                <select class="form-control">
-                                    <option>High</option>
-                                    <option>Normal</option>
-                                    <option>Low</option>
-                                </select>
-                            </div>
+                        @helper.form(action = routes.TicketController.editTicket()) {
+                        @helper.CSRF.formField
 
-                        </form>
+                        @b4.hidden("id", ticket.id.getOrElse(10000))
 
-                        <button type="button" class="btn btn-default"><i class="fa fa-envelope-o"></i> Save</button>
-                        <button type="button" class="btn btn-default"><i class="fa fa-file-text-o"></i> Cancel</button>
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Title</label>
+                            @b4.text(form("title"), '_hiddenLabel -> "title", 'placeholder -> "Title", 'class -> "form-control", 'value -> ticket.title.getOrElse(""))
+                            <!--<input type="text" class="form-control" placeholder="Enter ...">-->
+                        </div>
+
+                        <!-- textarea -->
+                        <div class="form-group">
+                            <label>Description</label>
+                            @b4.textarea(form("description"), '_hiddenLabel -> "description", 'placeholder -> "Description", 'class -> "form-control", 'value -> ticket.description.getOrElse(""))
+                            <!--<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>-->
+                        </div>
+
+                        <!-- select -->
+                        <div class="form-group">
+                            <label>Priority</label>
+                            @b4.select(form("priority"), options = priority, '_hiddenLabel -> "Priority", 'value -> ticket.priority.getOrElse(""), 'class -> "form-control")
+                        </div>
+
+                        <button type="submit" class="btn btn-default"><i class="fa fa-save"></i> Save</button>
+                        <a href="@routes.TicketController.ticket(ticket.id.getOrElse(10000))" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+
+                        }
 
                     </div>
                     <!-- /.box-body -->

@@ -1,17 +1,21 @@
-@template("Dispatch Ticket") {
+@(account: models.Account, notifications: Seq[Notification], ticket: Ticket, form: Form[forms.DispatchTicketForm.Data], users: Seq[(String, String)])(implicit request: Request[AnyContent], messages: Messages)
+
+@import b4.inline.fieldConstructor
+
+@template("Dispatch Ticket", account, notifications) {
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            General Form Elements
-            <small>Preview</small>
+            Dispatch Ticket
+            <small>#@ticket.id.getOrElse("")</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">General Elements</li>
+            <li><a href="@routes.HomeController.dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="@routes.TicketController.tickets">Tickets</a></li>
+            <li class="active">Dispatch Ticket</li>
         </ol>
     </section>
 
@@ -28,26 +32,26 @@
                 <!-- general form elements disabled -->
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">General Elements</h3>
+                        <h3 class="box-title">Dispatch Ticket</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form role="form">
 
-                            <!-- select -->
-                            <div class="form-group">
-                                <label>Dispatch to</label>
-                                <select class="form-control">
-                                    <option>DBMP Kota Bandung</option>
-                                    <option>Dinas Perhubungan Kota Bandung</option>
-                                    <option>Dinas Sosial Kota Bandung</option>
-                                </select>
-                            </div>
+                        @helper.form(action = routes.TicketController.dispatchTicket()) {
+                        @helper.CSRF.formField
 
-                        </form>
+                        @b4.hidden("id", ticket.id.getOrElse(10000))
 
-                        <button type="button" class="btn btn-default"><i class="fa fa-envelope-o"></i> Save</button>
-                        <button type="button" class="btn btn-default"><i class="fa fa-file-text-o"></i> Cancel</button>
+                        <!-- select -->
+                        <div class="form-group">
+                            <label>Status</label>
+                            @b4.select(form("assignee"), options = users, '_hiddenLabel -> "Assignee", 'value -> ticket.assignee.getOrElse(""), 'class -> "form-control")
+                        </div>
+
+                        <button type="submit" class="btn btn-default"><i class="fa fa-save"></i> Save</button>
+                        <a href="@routes.TicketController.ticket(ticket.id.getOrElse(10000))" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+
+                        }
 
                     </div>
                     <!-- /.box-body -->

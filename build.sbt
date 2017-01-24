@@ -46,7 +46,12 @@ lazy val commonSettings = Seq(
     .setPreference(IndentSpaces, 2)
     .setPreference(IndentLocalDefs, false)
     .setPreference(SpacesWithinPatternBinders, true)
-    .setPreference(SpacesAroundMultiImports, true)
+    .setPreference(SpacesAroundMultiImports, true),
+  excludeFilter in scalariformFormat := (excludeFilter in scalariformFormat).value ||
+    "Routes.scala" ||
+    "ReverseRoutes.scala" ||
+    "JavaScriptReverseRoutes.scala" ||
+    "RoutesPrefix.scala"
 )
 
 lazy val TicketingSystem = (project in file("."))
@@ -88,7 +93,8 @@ lazy val jvmOptions = Seq(
   "-Xms256M",
   "-Xmx2G",
   "-XX:MaxPermSize=2048M",
-  "-XX:+UseConcMarkSweepGC"
+  "-XX:+UseConcMarkSweepGC",
+  "-Dorg.apache.activemq.SERIALIZABLE_PACKAGES=*"
 )
 
 lazy val scalaCompilerOptions = Seq(

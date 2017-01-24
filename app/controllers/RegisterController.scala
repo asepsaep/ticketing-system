@@ -41,7 +41,7 @@ class RegisterController @Inject() (
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.username)
         accountService.retrieveAlongWithEmail(loginInfo, data.email).flatMap {
           case Some(account) ⇒
-            Future.successful(Redirect(routes.RegisterController.view()).flashing("error" → Messages("user.exists")))
+            Future.successful(Redirect(routes.RegisterController.view()).flashing("error" → "User already exists"))
           case None ⇒
             val authInfo = passwordHasher.hash(data.password)
             val account = Account(
@@ -59,7 +59,7 @@ class RegisterController @Inject() (
               authInfo ← authInfoRepository.add(loginInfo, authInfo)
               authenticator ← silhouette.env.authenticatorService.create(loginInfo)
               value ← silhouette.env.authenticatorService.init(authenticator)
-              result ← silhouette.env.authenticatorService.embed(value, Redirect(routes.HomeController.dashboard()))
+              result ← silhouette.env.authenticatorService.embed(value, Redirect(routes.HomeController.dashboard))
             } yield {
               result
             }

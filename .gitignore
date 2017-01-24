@@ -16,5 +16,7 @@ project/boot
 .settings
 logs
 target
+/target
+/project/target
 .idea_modules
 RUNNING_PID

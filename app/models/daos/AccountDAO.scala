@@ -22,6 +22,7 @@ trait AccountDAO {
   def find(username: String): Future[Option[Account]]
   def findByLoginInfoAlongWithEmail(username: String, email: String): Future[Option[Account]]
   def findByLoginInfo(loginInfo: LoginInfo): Future[Option[Account]]
+  def findByUserType(userType: String): Future[Seq[Account]]
   def all: Future[Seq[Account]]
   def all(page: Int, pageSize: Int): Future[Seq[Account]]
   def delete(username: String): Future[Unit]
@@ -64,6 +65,10 @@ class AccountDAOImpl @Inject() (protected val dbConfigProvider: DatabaseConfigPr
 
   override def findByLoginInfo(loginInfo: LoginInfo): Future[Option[Account]] = {
     findBy(account ⇒ account.providerId === loginInfo.providerID && account.providerKey.toLowerCase === loginInfo.providerKey.toLowerCase)
+  }
+
+  override def findByUserType(userType: String): Future[Seq[Account]] = {
+    db.run(Accounts.filter(account ⇒ account.userType === userType).result)
   }
 
   override def count: Future[Int] = {

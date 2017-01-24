@@ -1,17 +1,4 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-# An example controller showing a sample home page
 GET     /                           controllers.HomeController.dashboard
-GET     /tickets                           controllers.HomeController.tickets
-GET     /ticket                           controllers.HomeController.ticket
-GET     /notification                           controllers.HomeController.notification
-GET     /edit                           controllers.HomeController.edit
-GET     /status                           controllers.HomeController.status
-GET     /dispatch                           controllers.HomeController.dispatch
-GET     /statistic                           controllers.HomeController.statistic
-GET     /build                           controllers.HomeController.build
 
 GET     /register                   controllers.RegisterController.view
 POST    /register                   controllers.RegisterController.submit
@@ -19,10 +6,31 @@ POST    /register                   controllers.RegisterController.submit
 GET     /login                      controllers.LoginController.view
 POST    /login                      controllers.LoginController.submit
 
+GET     /notification               controllers.HomeController.notification
+
+GET     /tickets                    controllers.TicketController.tickets
+
+GET     /ticket/:id                 controllers.TicketController.ticket(id: Long)
+
+GET     /status/:id                 controllers.TicketController.status(id: Long)
+POST    /status                     controllers.TicketController.updateStatus
+
+GET     /dispatch/:id               controllers.TicketController.dispatch(id: Long)
+POST    /dispatch                   controllers.TicketController.dispatchTicket
+
+GET     /edit/:id                   controllers.TicketController.edit(id: Long)
+POST    /edit                       controllers.TicketController.editTicket
+
+GET     /build                      controllers.ModelController.view
+POST    /build                      controllers.ModelController.build
+
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
 GET     /message                    controllers.AsyncController.message
-
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+# TODO
+# GET     /notification             controllers.HomeController.notification
+# GET     /statistic                controllers.HomeController.statistic

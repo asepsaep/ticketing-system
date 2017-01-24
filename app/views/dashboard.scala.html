@@ -1,4 +1,6 @@
-@template("Dashboard") {
+@(account: models.Account, notifications: Seq[Notification])(implicit request: Request[AnyContent], messages: Messages)
+
+@template("Dashboard", account, notifications) {
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
