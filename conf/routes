@@ -24,6 +24,8 @@ POST    /edit                       controllers.TicketController.editTicket
 GET     /build                      controllers.ModelController.view
 POST    /build                      controllers.ModelController.build
 
+GET     /notif                      controllers.HomeController.notificationNumber
+
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

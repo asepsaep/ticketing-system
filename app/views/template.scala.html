@@ -55,24 +55,24 @@
 
                     <!-- Notifications: style can be found in dropdown.less -->
                     <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification-number">
                             <i class="fa fa-bell-o"></i>
                             @if(!notifications.filter(notif => !notif.isViewed).isEmpty) {
-                                <span class="label label-warning">@notifications.filter(notif => !notif.isViewed).size</span>
+                                <strong>@notifications.filter(notif => !notif.isViewed).size</strong>
                             }
                         </a>
                         <ul class="dropdown-menu">
-                            @for(notif <- notifications.take(10)) {
                             <li>
-                                <ul class="menu">
+                                <ul class="menu" id="notification-list">
+                                    @for(notif <- notifications.take(10)) {
                                     <li>
                                         <a href="#">
                                             @notif.content
                                         </a>
                                     </li>
+                                    }
                                 </ul>
                             </li>
-                            }
                             <li class="footer"><a href="@routes.HomeController.notification()">View all</a></li>
                         </ul>
                     </li>
@@ -129,9 +129,9 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
-                <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>
+                <!--<li><a href="@routes.HomeController.dashboard"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>-->
                 <li><a href="@routes.TicketController.tickets"><i class="fa fa-book"></i> <span>Tiket</span></a></li>
-                <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Notifikasi</span></a></li>
+                <li><a href="@routes.HomeController.notification"><i class="fa fa-book"></i> <span>Notifikasi</span></a></li>
                 <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Statistik</span></a></li>
             </ul>
         </section>
@@ -173,5 +173,6 @@
 <script src="@routes.Assets.versioned("javascripts/pages/dashboard2.js")"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="@routes.Assets.versioned("javascripts/demo.js")"></script>
+<script src="@routes.Assets.versioned("javascripts/notif.js")"></script>
 </body>
 </html>

@@ -13,4 +13,5 @@ object TicketReceiverHub {
 class TicketReceiverHub extends Producer with Oneway {
 
   override def endpointUri: String = "activemq:topic:New.Ticket"
+
 }

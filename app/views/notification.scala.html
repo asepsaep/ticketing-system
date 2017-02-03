@@ -1,4 +1,4 @@
-@(account: models.Account, notifications: Seq[Notification])
+@(account: models.Account, notifications: Seq[Notification])(implicit request: Request[AnyContent], messages: Messages)
 
 @template("Notification", account, notifications) {
 <!-- Content Wrapper. Contains page content -->
@@ -7,10 +7,10 @@
     <section class="content-header">
         <h1>
             Notification
-            <small>13 new notifications</small>
+            <!--<small>13 new notifications</small>-->
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="@routes.HomeController.dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Notification</li>
         </ol>
     </section>
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Inbox</h3>
+                        <h3 class="box-title">Notification</h3>
 
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
@@ -38,140 +38,17 @@
                             <table class="table table-hover table-striped">
                                 <tbody>
                                 <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">5 mins ago</td>
+                                    <td class="mailbox-subject"><b>Content</b></td>
+                                    <td class="mailbox-name"><b>Origin</b></td>
+                                    <td class="mailbox-date"><b>Date</b></td>
                                 </tr>
+                                @for(notif <- notifications) {
                                 <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">28 mins ago</td>
+                                    <td class="mailbox-subject"><b>@notif.content.getOrElse("")</b></td>
+                                    <td class="mailbox-name">@notif.origin.getOrElse("")</td>
+                                    <td class="mailbox-date">@notif.createdAt</td>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">11 hours ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">15 hours ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">Yesterday</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">2 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">2 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">2 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">2 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">2 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">4 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">12 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">12 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">14 days ago</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">DBMP Kota Bandung</a></td>
-                                    <td class="mailbox-subject"><b>New Ticket</b> - Jalan Panjunan berlubang...
-                                    </td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">15 days ago</td>
-                                </tr>
+                                }
                                 </tbody>
                             </table>
                             <!-- /.table -->

@@ -40,9 +40,9 @@ class TicketReceiver @Inject() (
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicket" ⇒ {
       val ticket = event.bodyAs[Ticket]
       println(ticket)
-      ticketDao.save(ticket.copy(assignee = Some("admin"))).flatMap { storedTicket ⇒
+      ticketDao.save(ticket.copy(assignee = Some("admin"), status = Some("New"))).flatMap { storedTicket ⇒
         Future {
-          ticketReceiverHub ! CamelMessage(ticket, Map(CamelMessage.MessageExchangeId → "NewTicketStored"))
+          ticketReceiverHub ! CamelMessage(storedTicket, Map(CamelMessage.MessageExchangeId → "NewTicketStored"))
         }
       }
     }
