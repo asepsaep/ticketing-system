@@ -130,9 +130,12 @@
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 <!--<li><a href="@routes.HomeController.dashboard"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>-->
-                <li><a href="@routes.TicketController.tickets"><i class="fa fa-book"></i> <span>Tiket</span></a></li>
-                <li><a href="@routes.HomeController.notification"><i class="fa fa-book"></i> <span>Notifikasi</span></a></li>
-                <li><a href="@routes.StatisticController.view"><i class="fa fa-book"></i> <span>Statistik</span></a></li>
+                <li><a href="@routes.TicketController.tickets"><i class="fa fa-book"></i> <span>Daftar Tiket</span></a></li>
+                <li><a href="@routes.HomeController.notification"><i class="fa fa-book"></i> <span>Daftar Notifikasi</span></a></li>
+                <li><a href="@routes.StatisticController.view"><i class="fa fa-book"></i> <span>Lihat Statistik</span></a></li>
+                @if(account.userType.getOrElse("user") == "admin") {
+                <li><a href="@routes.ModelController.view"><i class="fa fa-book"></i><span>Model Klasifikasi</span></a></li>
+                }
             </ul>
         </section>
         <!-- /.sidebar -->

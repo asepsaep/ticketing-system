@@ -18,6 +18,20 @@ case class Ticket(
   resolution: Option[String]
 ) {
   def toTicketSummary = TicketSummary(Preprocessor.clean(description.getOrElse("")), assignee.getOrElse(""))
+  override def toString =
+    s"""
+      | id = ${id.getOrElse("")}
+      | reporter = ${reporter.getOrElse("")}
+      | assignee = ${assignee.getOrElse("")}
+      | assigneeName = ${assigneeName.getOrElse("")}
+      | createdAt = ${createdAt}
+      | closedAt = ${closedAt.getOrElse("")}
+      | status = ${status.getOrElse("")}
+      | priority = ${priority.getOrElse("")}
+      | title = ${title.getOrElse("")}
+      | description= ${description.getOrElse("")}
+      | resolution = ${resolution.getOrElse("")}
+    """.stripMargin
 }
 
 case class TicketSummary(
