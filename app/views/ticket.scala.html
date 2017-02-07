@@ -1,4 +1,4 @@
-@(account: models.Account, notifications: Seq[Notification], ticket: Ticket)
+@(account: models.Account, notifications: Seq[Notification], ticket: Ticket)(implicit request: Request[AnyContent], messages: Messages)
 
 @template("Ticket Detail", account, notifications) {
 <!-- Content Wrapper. Contains page content -->

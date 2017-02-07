@@ -32,14 +32,17 @@
                         <i class="fa fa-times"></i></button>
                 </div>
             </div>
-            <div class="box-body" id="log">
-                [Log]
-            </div>
+            <!--<div class="box-body" id="log">-->
+                <!--[Log]-->
+            <!--</div>-->
             <!-- /.box-body -->
+            @helper.form(action = routes.ModelController.build()) {
+            @helper.CSRF.formField
             <div class="box-footer">
-                <button type="button" class="btn btn-default">Build</button>
+                <button type="submit" class="btn btn-default">Build</button>
             </div>
             <!-- /.box-footer-->
+            }
 
         </div>
 
@@ -47,7 +50,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Configuration</h3>
                 <div class="box-body">
-                    @helper.form(action = routes.ModelController.build()) {
+                    @helper.form(action = routes.ModelController.config()) {
                     @helper.CSRF.formField
                         <!-- text input -->
                         <div class="form-group">

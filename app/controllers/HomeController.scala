@@ -66,8 +66,8 @@ class HomeController @Inject() (
     }
   }
 
-  //  TODO
-  //  def statistic = Action { Ok(views.html.statistic()) }
-  //  def build = Action { Ok(views.html.build()) }
+  def logout = silhouette.SecuredAction.async { implicit request ⇒
+    silhouette.env.authenticatorService.discard(request.authenticator, Ok)
+  }
 
 }

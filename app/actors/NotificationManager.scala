@@ -27,7 +27,19 @@ class NotificationManager @Inject() (
         belongsTo = ticket.assignee.getOrElse(""),
         isViewed = false,
         origin = Some("Subsistem Disposisi Otomatis"),
-        content = Some("New Ticket Received -- " + ticket.description.getOrElse("").take(100))
+        content = Some("New Ticket Received -- " + ticket.description.getOrElse(""))
+      )
+      notificationDao.save(notification)
+    }
+
+    case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "ManuallyDispatchedTicket" ⇒ {
+      val ticket = event.bodyAs[Ticket]
+      val notification = Notification(
+        id = None,
+        belongsTo = ticket.assignee.getOrElse(""),
+        isViewed = false,
+        origin = Some("Disposisi Manual"),
+        content = Some("Manually Dispatched Ticket -- " + ticket.description.getOrElse(""))
       )
       notificationDao.save(notification)
     }

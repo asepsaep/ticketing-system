@@ -35,7 +35,7 @@
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="index3.html" class="logo">
+        <a href="@routes.HomeController.dashboard()" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>TS</b></span>
             <!-- logo for regular state and mobile devices -->
@@ -96,7 +96,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="@routes.HomeController.logout" class="btn btn-default btn-flat">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -132,7 +132,7 @@
                 <!--<li><a href="@routes.HomeController.dashboard"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>-->
                 <li><a href="@routes.TicketController.tickets"><i class="fa fa-book"></i> <span>Tiket</span></a></li>
                 <li><a href="@routes.HomeController.notification"><i class="fa fa-book"></i> <span>Notifikasi</span></a></li>
-                <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Statistik</span></a></li>
+                <li><a href="@routes.StatisticController.view"><i class="fa fa-book"></i> <span>Statistik</span></a></li>
             </ul>
         </section>
         <!-- /.sidebar -->

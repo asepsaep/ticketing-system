@@ -1,7 +1,9 @@
 package controllers
 
-import javax.inject.{ Inject, Singleton }
+import javax.inject.{ Inject, Named, Singleton }
 
+import akka.actor.ActorRef
+import akka.camel.CamelMessage
 import com.mohiva.play.silhouette.api.Silhouette
 import com.typesafe.config.ConfigFactory
 import forms.{ DispatchTicketForm, EditTicketForm, LoginForm, UpdateTicketStatusForm }
@@ -20,7 +22,8 @@ class TicketController @Inject() (
   silhouette: Silhouette[DefaultEnv],
   notificationDao: NotificationDAO,
   ticketDao: TicketDAO,
-  accountDao: AccountDAO
+  accountDao: AccountDAO,
+  @Named("ticket-receiver-hub") ticketReceiverHub: ActorRef
 ) extends Controller with I18nSupport {
 
   def tickets = silhouette.SecuredAction.async { implicit request ⇒
@@ -72,6 +75,9 @@ class TicketController @Inject() (
         ticket ← Future { maybeTicket.get }
         updatedTicket ← ticketDao.save(ticket.copy(status = Some(data.status), resolution = Some(data.resolution)))
       } yield {
+        if (updatedTicket.status == Some("Closed") && updatedTicket.assignee != Some("admin")) {
+          ticketDao.addAsDataTraining(updatedTicket)
+        }
         Redirect(routes.TicketController.ticket(updatedTicket.id.getOrElse(10000)))
       }
     )
@@ -107,7 +113,8 @@ class TicketController @Inject() (
           user ← Future { maybeUser.get }
           updatedTicket ← ticketDao.save(ticket.copy(assignee = Option(user.username), assigneeName = user.name))
         } yield {
-          Redirect(routes.TicketController.ticket(updatedTicket.id.getOrElse(10000)))
+          ticketReceiverHub ! CamelMessage(updatedTicket, Map(CamelMessage.MessageExchangeId → "ManuallyDispatchedTicket"))
+          Redirect(routes.HomeController.dashboard())
         }
       )
     }

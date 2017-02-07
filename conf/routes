@@ -6,10 +6,12 @@ POST    /register                   controllers.RegisterController.submit
 GET     /login                      controllers.LoginController.view
 POST    /login                      controllers.LoginController.submit
 
+GET     /logout                     controllers.HomeController.logout
+
 GET     /notification               controllers.HomeController.notification
+GET     /notif                      controllers.HomeController.notificationNumber
 
 GET     /tickets                    controllers.TicketController.tickets
-
 GET     /ticket/:id                 controllers.TicketController.ticket(id: Long)
 
 GET     /status/:id                 controllers.TicketController.status(id: Long)
@@ -23,8 +25,13 @@ POST    /edit                       controllers.TicketController.editTicket
 
 GET     /build                      controllers.ModelController.view
 POST    /build                      controllers.ModelController.build
+GET     /build/:id                  controllers.ModelController.buildSession(id: Long)
+GET     /buildlog/:id               controllers.ModelController.getLog(id: Long)
+POST    /config                     controllers.ModelController.config
 
-GET     /notif                      controllers.HomeController.notificationNumber
+GET     /statistic                  controllers.StatisticController.view
+GET     /stat/:username             controllers.StatisticController.stat(username: String)
+GET     /stat2/:username            controllers.StatisticController.stat2(username: String)
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
@@ -32,7 +39,3 @@ GET     /count                      controllers.CountController.count
 GET     /message                    controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-# TODO
-# GET     /notification             controllers.HomeController.notification
-# GET     /statistic                controllers.HomeController.statistic

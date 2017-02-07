@@ -1,6 +1,6 @@
 package utils
 
-import actors.{ NotificationManager, TicketReceiver, TicketReceiverHub }
+import actors._
 import com.google.inject.name.Named
 import com.google.inject.{ AbstractModule, Provides }
 import com.mohiva.play.silhouette.api.actions.{ SecuredErrorHandler, UnsecuredErrorHandler }
@@ -46,12 +46,15 @@ class SilhouetteModule extends AbstractModule with ScalaModule with AkkaGuiceSup
     bindActor[TicketReceiver]("ticket-receiver")
     bindActor[NotificationManager]("notification-manager")
     bindActor[TicketReceiverHub]("ticket-receiver-hub")
+    bindActor[BuildModelRequest]("build-model-request")
+    bindActor[BuildLoggerReceiver]("build-logger-receiver")
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[UnsecuredErrorHandler].to[CustomUnsecuredErrorHandler]
     bind[SecuredErrorHandler].to[CustomSecuredErrorHandler]
     bind[AccountDAO].to[AccountDAOImpl]
     bind[TicketDAO].to[TicketDAOImpl]
     bind[NotificationDAO].to[NotificationDAOImpl]
+    bind[BuildSessionDAO].to[BuildSessionDAOImpl]
     bind[AccountService].to[AccountServiceImpl]
     bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoDAO]
     bind[CacheLayer].to[PlayCacheLayer]

@@ -91,3 +91,31 @@ class NotificationTable(tag: Tag) extends Table[Notification](tag, "notification
   ) <> (Notification.tupled, Notification.unapply _)
 
 }
+
+class BuildSessionTable(tag: Tag) extends Table[BuildSession](tag, "build_session") {
+
+  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def caller = column[String]("caller")
+  def time = column[OffsetDateTime]("time")
+  def log = column[String]("log")
+
+  override def * = (
+    id.?,
+    caller,
+    time,
+    log
+  ) <> (BuildSession.tupled, BuildSession.unapply _)
+
+}
+
+class LabeledTicketTable(tag: Tag) extends Table[TicketSummary](tag, "labeled_ticket") {
+
+  def description = column[String]("description")
+  def assignee = column[String]("assignee")
+
+  override def * = (
+    description,
+    assignee
+  ) <> (TicketSummary.tupled, TicketSummary.unapply _)
+
+}

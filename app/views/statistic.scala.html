@@ -1,4 +1,6 @@
-@(account: models.Account, notifications: Seq[Notification])
+@(account: models.Account, notifications: Seq[Notification], form: Form[forms.DummyForm.Data], users: Seq[(String, String)])(implicit request: Request[AnyContent], messages: Messages)
+
+@import b4.inline.fieldConstructor
 
 @template("Statistic", account, notifications) {
 <!-- Content Wrapper. Contains page content -->
@@ -19,6 +21,8 @@
     <section class="content">
         <div class="row">
             <div class="col-md-6">
+                <input type="hidden" id="username" value="@account.username">
+                <input type="hidden" id="username-2" value="@account.username">
                 <!-- AREA CHART -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -42,16 +46,16 @@
                 <!-- DONUT CHART -->
                 <div class="box box-danger">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Statistik status tiket sampai saat ini</h3>
+                        <h3 class="box-title">Data Perbandingan Status Tiket</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
-                    <div class="box-body">
-                        <canvas id="pieChart" style="height:250px"></canvas>
+                    <div class="box-body" id="pie-chart-container">
+                        @b4.select(form("username"), options = users, '_hiddenLabel -> "Username", 'value -> "admin", 'class -> "form-control", 'id -> "perbandingan-status-tiket")
+                        <canvas id="pie-chart" style="height:250px"></canvas>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -83,7 +87,7 @@
                 <!-- BAR CHART -->
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Perbandingan tiket yang telah diselesaikan dengan yang belum</h3>
+                        <h3 class="box-title">Data Perbandingan Prioritas Tiket</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -91,10 +95,9 @@
                             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
-                    <div class="box-body">
-                        <div class="chart">
-                            <canvas id="barChart" style="height:230px"></canvas>
-                        </div>
+                    <div class="box-body" id="pie-chart-container-2">
+                        @b4.select(form("username"), options = users, '_hiddenLabel -> "Username", 'value -> "admin", 'class -> "form-control", 'id -> "perbandingan-prioritas-tiket")
+                        <canvas id="pie-chart-2" style="height:230px"></canvas>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -110,3 +113,4 @@
 </div>
 <!-- /.content-wrapper -->
 }
+<script src="@routes.Assets.versioned("javascripts/stats.js")"></script>

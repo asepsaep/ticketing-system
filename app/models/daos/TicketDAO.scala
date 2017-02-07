@@ -24,11 +24,13 @@ trait TicketDAO {
   def save(ticket: Ticket): Future[Ticket]
   def count: Future[Int]
   def delete(id: Long): Future[Unit]
+  def addAsDataTraining(ticket: Ticket): Future[TicketSummary]
 }
 
 class TicketDAOImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends TicketDAO with HasDatabaseConfigProvider[JdbcProfile] {
 
   private val Tickets = TableQuery[TicketTable]
+  private val LabeledTickets = TableQuery[LabeledTicketTable]
 
   private def findBy(criterion: (TicketTable ⇒ slick.lifted.Rep[Boolean])) = db.run(
     for {
@@ -98,6 +100,14 @@ class TicketDAOImpl @Inject() (protected val dbConfigProvider: DatabaseConfigPro
 
   override def findFrom(reporter: String): Future[Seq[Ticket]] = {
     db.run(Tickets.filter(_.reporter === reporter).sortBy(_.createdAt.desc).result)
+  }
+
+  override def addAsDataTraining(ticket: Ticket): Future[TicketSummary] = {
+    db.run(
+      for {
+        u ← LabeledTickets += ticket.toTicketSummary
+      } yield ticket.toTicketSummary
+    )
   }
 
 }
