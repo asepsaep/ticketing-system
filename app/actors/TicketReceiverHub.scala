@@ -3,7 +3,7 @@ package actors
 import javax.inject.Singleton
 
 import akka.actor.Props
-import akka.camel.{ Oneway, Producer }
+import akka.camel.{ CamelMessage, Oneway, Producer }
 
 object TicketReceiverHub {
   def props = Props[TicketReceiverHub]

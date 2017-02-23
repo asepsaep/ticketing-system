@@ -21,6 +21,7 @@ class NotificationManager @Inject() (
 
   override def receive: Receive = {
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicketStored" ⇒ {
+      println("[Notification Manager] Received Event New Ticket from Ticket Management")
       val ticket = event.bodyAs[Ticket]
       val notification = Notification(
         id = None,
@@ -33,6 +34,7 @@ class NotificationManager @Inject() (
     }
 
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "ManuallyDispatchedTicket" ⇒ {
+      println("[Notification Manager] Received Event New Ticket from Ticket Management")
       val ticket = event.bodyAs[Ticket]
       val notification = Notification(
         id = None,

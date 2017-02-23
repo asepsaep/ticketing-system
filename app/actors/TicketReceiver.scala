@@ -26,13 +26,15 @@ class TicketReceiver @Inject() (
 
   override def receive: Receive = {
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicketWithProbability" ⇒ {
+      println("[Ticket Management] Received Event Ticket from Classifier")
       val ticket = event.bodyAs[TicketProbability]
-       println(OffsetDateTime.now())
-       println(ticket)
+      println(OffsetDateTime.now())
+      println(ticket)
       accountDao.find(ticket.ticket.assignee.getOrElse("")).flatMap { account ⇒
         val name = if (ticket.probability > (ModelConfigObj.treshold - 0.01)) account.flatMap(_.name) else Option("admin")
         ticketDao.save(ticket.ticket.copy(assigneeName = name, status = Some("New"))).flatMap { storedTicket ⇒
           Future {
+            println("[Event Ticket] Ticket Management -> Notification Manager")
             ticketReceiverHub ! CamelMessage(storedTicket, Map(CamelMessage.MessageExchangeId → "ManuallyDispatchedTicket"))
           }
         }
@@ -40,10 +42,12 @@ class TicketReceiver @Inject() (
     }
 
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicket" ⇒ {
+      println("[Ticket Management] Received Event Ticket")
       val ticket = event.bodyAs[Ticket]
       println(ticket)
       ticketDao.save(ticket.copy(assignee = Some("admin"), status = Some("New"))).flatMap { storedTicket ⇒
         Future {
+          println("[Event Ticket] Ticket Management -> Notification Manager")
           ticketReceiverHub ! CamelMessage(storedTicket, Map(CamelMessage.MessageExchangeId → "NewTicketStored"))
         }
       }
