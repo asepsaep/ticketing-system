@@ -39,14 +39,14 @@
                                 <tbody>
                                 <tr>
                                     <td class="mailbox-subject"><b>Content</b></td>
-                                    <td class="mailbox-name"><b>Origin</b></td>
-                                    <td class="mailbox-date"><b>Date</b></td>
+                                    <td class="mailbox-name" width="20%"><b>Origin</b></td>
+                                    <td class="mailbox-date" width="20%"><b>Date</b></td>
                                 </tr>
                                 @for(notif <- notifications) {
                                 <tr>
                                     <td class="mailbox-subject"><b>@notif.content.getOrElse("")</b></td>
                                     <td class="mailbox-name">@notif.origin.getOrElse("")</td>
-                                    <td class="mailbox-date">@notif.createdAt</td>
+                                    <td class="mailbox-date tdtime">@notif.createdAt</td>
                                 </tr>
                                 }
                                 </tbody>
