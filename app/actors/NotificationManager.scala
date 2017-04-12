@@ -1,5 +1,7 @@
 package actors
 
+import java.time.LocalTime
+
 import javax.inject.{ Inject, Singleton }
 
 import akka.actor.{ Actor, Props }
@@ -21,20 +23,22 @@ class NotificationManager @Inject() (
 
   override def receive: Receive = {
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicketStored" ⇒ {
-      println("[Notification Manager] Received Event New Ticket from Ticket Management")
+      println("\n" + LocalTime.now)
+      println("[Notification Manager] Received Event Ticket from Ticket Management")
       val ticket = event.bodyAs[Ticket]
       val notification = Notification(
         id = None,
         belongsTo = ticket.assignee.getOrElse(""),
         isViewed = false,
-        origin = Some("Subsistem Disposisi Otomatis"),
+        origin = Some("New Ticket"),
         content = Some("New Ticket Received -- " + ticket.description.getOrElse(""))
       )
       notificationDao.save(notification)
     }
 
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "ManuallyDispatchedTicket" ⇒ {
-      println("[Notification Manager] Received Event New Ticket from Ticket Management")
+      println("\n" + LocalTime.now)
+      println("[Notification Manager] Received Event Ticket from Ticket Management")
       val ticket = event.bodyAs[Ticket]
       val notification = Notification(
         id = None,

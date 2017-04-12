@@ -1,6 +1,6 @@
 package actors
 
-import java.time.OffsetDateTime
+import java.time.{ LocalTime, OffsetDateTime }
 import javax.inject.{ Inject, Named, Singleton }
 
 import akka.actor.{ Actor, ActorRef, Props }
@@ -26,9 +26,9 @@ class TicketReceiver @Inject() (
 
   override def receive: Receive = {
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicketWithProbability" ⇒ {
+      println("\n" + LocalTime.now)
       println("[Ticket Management] Received Event Ticket from Classifier")
       val ticket = event.bodyAs[TicketProbability]
-      println(OffsetDateTime.now())
       println(ticket)
       accountDao.find(ticket.ticket.assignee.getOrElse("")).flatMap { account ⇒
         val name = if (ticket.probability > (ModelConfigObj.treshold - 0.01)) account.flatMap(_.name) else Option("admin")
@@ -42,6 +42,7 @@ class TicketReceiver @Inject() (
     }
 
     case event: CamelMessage if event.headers(CamelMessage.MessageExchangeId) == "NewTicket" ⇒ {
+      println("\n" + LocalTime.now)
       println("[Ticket Management] Received Event Ticket")
       val ticket = event.bodyAs[Ticket]
       println(ticket)
